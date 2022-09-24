@@ -66,7 +66,13 @@ echo ====================================
 echo
 read -p 'Database: ' datavar
 mysql -e "create database $datavar character set utf8"
-[ $? -ne 0 ] && echo -e "${RED}A base de dados já existe, verifique os logs! .${RESET}\\n\\n"
+
+while [ $? -ne 0 ]; do
+  echo -e "${RED}A base de dados já existe, verifique os logs! .${RESET}\\n\\n"
+  read -p 'Database: ' datavar
+  mysql -e "create database $datavar character set utf8"
+done
+echo -e "${GREEN}A base de dados ${datavar} foi criada com sucesso !\\n\\n${RESET}"
 sleep 3
 
 # Criando usuário
@@ -76,8 +82,11 @@ echo ====================================
 echo
 read -p 'Username: ' uservar
 read -sp 'Password: ' passvar
-mysql -e "create user '$uservar'@'%' identified by '$passvara'"
-mysql -e "grant all privileges on $datavar.* to '$uservar'@'%' with grant option"; # Dando privilégios ao usuário
+mysql -e "create user '$uservar'@'%' identified by '$passvar'"
+echo -e "${GREEN}O Usuário ${uservar} foi criada com sucesso !\\n\\n${RESET}"
+sleep 3
+
+echo -e "${GREEN}Sucesso !\\n\\n${RESET}"
 
 
 
